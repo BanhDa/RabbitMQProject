@@ -7,6 +7,7 @@ package com.mycompany.rabbitmq.subcriber;
 
 import com.mycompany.rabbitmq.subcriber.processor.Processor;
 import com.mycompany.rabbitmq.config.Config;
+import com.mycompany.rabbitmq.util.Constant;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -32,10 +33,13 @@ public class Subcriber implements Runnable{
             Connection connection = factory.newConnection();
             Channel channel = connection.createChannel();
             
-            channel.queueDeclare(Config.QUEUE_NAME, false, false, false, null);
+            channel.exchangeDeclare(Config.DIRECT_EXCHANGE_NAME, Constant.EXCHANGE.DIRECT);
             
+            String queueName = "directQueue";
+            channel.queueDeclareNoWait(queueName, false, false, false, null);
+            channel.queueBind(queueName, Config.DIRECT_EXCHANGE_NAME, "logs");
             Processor processor = new Processor(channel, name);
-            channel.basicConsume(Config.QUEUE_NAME, true, processor);
+            channel.basicConsume(queueName, true, processor);
                     
         } catch (Exception e) {
             e.printStackTrace();

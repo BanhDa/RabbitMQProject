@@ -5,18 +5,15 @@
  */
 package com.mycompany.rabbitmq.subcriber;
 
-import com.mycompany.rabbitmq.dao.DAO;
-
 /**
  *
  * @author Vantu
  */
 public class Test {
     
-    public static void main(String[] args) {
-        DAO.init();
-        for (int i = 0; i < 1; i++) {
-            Subcriber subcriber = new Subcriber("Processor " + i + " :");
+    public static void main(String[] args) {        
+        for (int i = 1; i < 4; i++) {
+            Subcriber subcriber = new Subcriber("Processor " + i + i + i+ i+ i+ i+ i+ i+ i+ i+ i+ i+ i+ i+ i+ i+ i + " :");
             Thread thread = new Thread(subcriber);
             thread.run();
         }

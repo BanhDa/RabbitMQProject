@@ -5,7 +5,6 @@
  */
 package com.mycompany.rabbitmq.subcriber.processor;
 
-import com.mycompany.rabbitmq.dao.DAO;
 import com.mycompany.rabbitmq.util.JsonUtil;
 
 /**
@@ -24,12 +23,7 @@ public class Task implements Runnable{
         System.out.println("queue size: " + Executor.getQueueSize());
 
         Long time = JsonUtil.getLongParam(message, "time");
-        Long startTime = System.currentTimeMillis();
-        DAO.save(message);
         long currentTime = System.currentTimeMillis();
-        System.out.println("time save db : " + (currentTime - startTime));
-        
-        currentTime = System.currentTimeMillis();
         System.out.println("time : " + (currentTime - time));
         System.out.println("***************************");
         System.out.println("");

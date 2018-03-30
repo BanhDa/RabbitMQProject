@@ -7,6 +7,7 @@ package com.mycompany.rabbitmq.publisher;
 
 import com.mycompany.rabbitmq.config.Config;
 import com.mycompany.rabbitmq.entities.Request;
+import com.mycompany.rabbitmq.util.Constant;
 import com.mycompany.rabbitmq.util.JsonUtil;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -26,12 +27,13 @@ public class Publisher {
             Connection connection = factory.newConnection();
             Channel channel = connection.createChannel();
             
-            channel.queueDeclare(Config.QUEUE_NAME, false, false, false, null);
+            channel.exchangeDeclare(Config.DIRECT_EXCHANGE_NAME, Constant.EXCHANGE.DIRECT);
             
-            for (int i = 0; i < 6000; i++) {
+            for (int i = 0; i < 1; i++) {
                 Request request = new Request("request " + i);
-                channel.basicPublish("", Config.QUEUE_NAME, null, JsonUtil.toJson(request).getBytes());
-                Thread.sleep(10);
+                channel.basicPublish(Config.DIRECT_EXCHANGE_NAME, "logs", null, JsonUtil.toJson(request).getBytes());
+                System.out.println("send request: " + request);
+                Thread.sleep(1000);
             }
             
             channel.close();
