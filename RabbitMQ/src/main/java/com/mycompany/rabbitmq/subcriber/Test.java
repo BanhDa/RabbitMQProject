@@ -12,7 +12,7 @@ package com.mycompany.rabbitmq.subcriber;
 public class Test {
     
     public static void main(String[] args) {        
-        for (int i = 1; i < 4; i++) {
+        for (int i = 1; i < 2; i++) {
             Subcriber subcriber = new Subcriber("Processor " + i + i + i+ i+ i+ i+ i+ i+ i+ i+ i+ i+ i+ i+ i+ i+ i + " :");
             Thread thread = new Thread(subcriber);
             thread.run();

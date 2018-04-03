@@ -12,7 +12,11 @@ package com.mycompany.rabbitmq.config;
 public class Config {
 
     public static final String RABBITMQ_HOST = "localhost";
+    
     public static final String QUEUE_NAME = "queue.test";
+    public static final String RPC_QUEUE_NAME = "rpc_queue";
+    
+    public static final String RPC_EXCHANGE_NAME = "rpc_exchange";
     public static final String FANOUT_EXCHANGE_NAME = "fanout_exchange";
     public static final String DIRECT_EXCHANGE_NAME = "direct_exchange";
     public static final String HEADERS_EXCHANGE_NAME = "header_exchange";

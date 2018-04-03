@@ -20,12 +20,12 @@ public class Task implements Runnable{
         
     @Override
     public void run() {
-        System.out.println("queue size: " + Executor.getQueueSize());
+//        System.out.println("queue size: " + Executor.getQueueSize());
 
         Long time = JsonUtil.getLongParam(message, "time");
-        long currentTime = System.currentTimeMillis();
-        System.out.println("time : " + (currentTime - time));
-        System.out.println("***************************");
-        System.out.println("");
+//        long currentTime = System.currentTimeMillis();
+//        System.out.println("time : " + (currentTime - time));
+//        System.out.println("***************************");
+//        System.out.println("");
     }
 }

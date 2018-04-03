@@ -11,6 +11,8 @@ import com.mycompany.rabbitmq.util.Constant;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 /**
  *
@@ -33,16 +35,29 @@ public class Subcriber implements Runnable{
             Connection connection = factory.newConnection();
             Channel channel = connection.createChannel();
             
-            channel.exchangeDeclare(Config.DIRECT_EXCHANGE_NAME, Constant.EXCHANGE.DIRECT);
+            channel.queueDeclare(Config.RPC_QUEUE_NAME, false, false, false, null);
+            channel.basicQos(1);
             
-            String queueName = "directQueue";
-            channel.queueDeclareNoWait(queueName, false, false, false, null);
-            channel.queueBind(queueName, Config.DIRECT_EXCHANGE_NAME, "logs");
+//            channel.exchangeDeclare(Config.RPC_EXCHANGE_NAME, Constant.EXCHANGE.TOPIC);
+//            
+//            channel.queueDeclareNoWait(Config.RPC_QUEUE_NAME, false, false, false, null);
+//            channel.queueBind(Config.RPC_QUEUE_NAME, Config.RPC_EXCHANGE_NAME, "request");
+            
             Processor processor = new Processor(channel, name);
-            channel.basicConsume(queueName, true, processor);
-                    
-        } catch (Exception e) {
+            channel.basicConsume(Config.RPC_QUEUE_NAME, true, processor);
+            while (true) {
+                synchronized(processor) {
+                    try {
+                        processor.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            
+        } catch (IOException | TimeoutException e) {
             e.printStackTrace();
         }
+        
     }
 }
